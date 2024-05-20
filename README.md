@@ -5,11 +5,12 @@ Este é um repositório para resolução de alguns testes para o cargo de desenv
 Para este teste foram utilizadas as tecnologias React e Next.js.
 
 
-Para executá-lo primeiro após realizar o git clone: 
+Para executá-lo primeiro após realizar o git clone:
+
     1 - Execute o comando npm install;
 
     2 - Execute o comando npm run dev;
-    
+
     3 - acesse a página http://localhost:8080/
 
 
