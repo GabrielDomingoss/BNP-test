@@ -13,17 +13,7 @@ type ModalProps = {
 	};
 };
 
-/* 
-	Modal
-
-	- Ao clicar no wrapper do modal, o modal deve ser fechado, porém esta ação deve ser ignorada caso o usuário clique em qualquer elemento dentro do modal
-*/
-
-// SOLUCAO
-  
-// adicionar a verificacao dos atributos html que devem fechar o modal e também verificar se o classlist contém o styles do modal
-
-export const Modal: React.FC<ModalProps> = ({ children, title, isOpen, ...props }) => {
+export const ConfirmationModal: React.FC<ModalProps> = ({ children, title, isOpen, ...props }) => {
 	function handleCloseClick(e: React.MouseEvent) {
 		const attributeName = e.target.attributes[0]?.name;
 		if (attributeName === 'data-modal-close' 
@@ -34,30 +24,26 @@ export const Modal: React.FC<ModalProps> = ({ children, title, isOpen, ...props 
 		}
 	}
 
-	function handleConfirmClick(e: React.MouseEvent) {
+    function handleConfirmClick(e: React.MouseEvent) {
 		props.onConfirm?.();
-	}
-
-	function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
-		if (e.key === 'Escape') props.onClose?.('esc', e.target);
 	}
 
 	if (!isOpen) return null;
 
 	return (
-		<div data-modal-wrapper className={styles.wrapper} onClick={handleCloseClick} onKeyDown={handleKeyDown}>
+        <div data-modal-wrapper className={ styles.wrapper } onClick={handleCloseClick}>
 			<div data-modal-container>
-				<header data-modal-header>
-					<h2>{title}</h2>
+                <header data-modal-header>
+                    <h2>{title}</h2>
 
-					<button data-modal-close onClick={handleCloseClick}>
-						X
-					</button>
-				</header>
+                    <button data-modal-close onClick={handleCloseClick}>
+                        X
+                    </button>
+                </header>
 
-				{children}
+                {children}
 
-				{!props.footer?.hidden && (
+                {!props.footer?.hidden && (
 					<div data-modal-footer>
 						<button data-modal-cancel onClick={handleCloseClick}>
 							{props.footer?.cancelText ?? 'Cancelar'}
@@ -68,7 +54,7 @@ export const Modal: React.FC<ModalProps> = ({ children, title, isOpen, ...props 
 						</button>
 					</div>
 				)}
-			</div>
-		</div>
+            </div>
+        </div>
 	);
 };

@@ -10,22 +10,66 @@
  */
 
 import styles from '@/styles/formulario.module.css';
+import { IUserCreate } from '@/types/user';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 export default function Form() {
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-
+	const {
+		register,
+		handleSubmit,
+		formState,
+	  } = useForm<IUserCreate>({mode: 'onBlur'})
+	  
+	const handleSubmitEvent: SubmitHandler<IUserCreate> = async(data: IUserCreate) => {
+		try {
+			const response = await fetch('/api/users/create',{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			});
+			const result = await response.json();
+			alert('Cadastrado');
+		}
+		catch(error) {
+			console.error(error);
+		}
 		console.log('submit');
 	}
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.content}>
-				<form onSubmit={handleSubmit}>
-					<input type="text" placeholder="Name" />
-					<input type="email" placeholder="E-mail" />
+				<form onSubmit={handleSubmit(handleSubmitEvent)}>
+					<input type="text" placeholder="Name" 
+						{
+							...register('name', 
+							{
+								required: 
+								{
+									value: true,
+									message: 'Este campo é obrigatório'
+								}
+							})
+						}
+					/>
+					{formState.errors.name && <span>{formState.errors.name.message}</span>}
+					<input type="email" placeholder="E-mail" 
+						{...register('email', {
+							required: {
+								value: true, 
+								message: 'Este campo é obrigatório'
+							}, 
+							pattern: {
+								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
+								message: 'insira um email valido'
+							}
+						})}
+					/>
+					{formState.errors.email && <span>{formState.errors.email.message}</span>}
 
-					<button type="submit" data-type="confirm">
+					<button type="submit" disabled={!formState.isValid} data-type="confirm">
 						Enviar
 					</button>
 				</form>

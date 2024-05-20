@@ -4,6 +4,8 @@
  * - O modal fecha ao clicar em qualquer elemento, resolva o problema
  */
 
+
+// solucao: remover o onclick do modal
 import { useState } from 'react';
 
 import styles from '@/styles/modal.module.css';

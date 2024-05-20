@@ -14,8 +14,16 @@ import { NextApiRequest, NextApiResponse } from 'next/types';
 
 import { IUser, IUserCreate } from '@/types/user.d';
 
-const users: IUser[] = [];
+const users: IUserCreate[] = [];
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-	return res.status(400).json(undefined);
+	if(req.method === 'POST') {
+		const data: IUserCreate = req.body;
+
+		users.push({name: data.name, email: data.email})
+		return res.status(200).json(users);
+	}
+	else {
+		return res.status(400).json(undefined);
+	}
 };
